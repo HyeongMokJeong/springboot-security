@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
-@Entity
+@Entity // db table과 1대1 매핑되는 객체
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,6 +20,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    // CamelCase로 선언했다면 @Table(name="")을 통해 UnderScore로 테이블 생성
     private String username;
     private String password;
     private String email;
