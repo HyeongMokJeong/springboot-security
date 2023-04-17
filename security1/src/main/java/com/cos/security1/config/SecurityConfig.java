@@ -1,5 +1,7 @@
 package com.cos.security1.config;
 
+import com.cos.security1.config.oauth.PrincipalOauth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,6 +14,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity // Spring Security Filter(SecurityConfig)가 기본 Spring filter chain에 등록됨
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) //@Secured 활성화, @preAuthorize @PostAuthorize 활성화
 public class SecurityConfig {
+
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
 
     @Bean // 해당 메소드의 리턴 오브젝트를 ioc로 등록
     public BCryptPasswordEncoder encodePwd() {
@@ -32,7 +37,11 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/loginForm")
                         .loginProcessingUrl("/login") // login 주소가 호출이 되면 시큐리티가 대신 로그인 진행
-                        .defaultSuccessUrl("/");
+                        .defaultSuccessUrl("/")
+                        .and()
+                        .oauth2Login()
+                        .userInfoEndpoint()
+                        .userService(principalOauth2UserService);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
