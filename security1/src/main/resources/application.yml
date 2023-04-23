@@ -34,3 +34,5 @@ spring:
               - https://www.googleapis.com/auth/user.phonenumbers.read
               - https://www.googleapis.com/auth/user.addresses.read
               - https://www.googleapis.com/auth/user.gender.read
+  profiles:
+    active: dev
