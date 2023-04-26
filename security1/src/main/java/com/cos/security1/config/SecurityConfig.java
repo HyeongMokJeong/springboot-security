@@ -37,11 +37,11 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/loginForm")
                         .loginProcessingUrl("/login") // login 주소가 호출이 되면 시큐리티가 대신 로그인 진행
-                        .defaultSuccessUrl("/")
-                        .and()
-                        .oauth2Login()
-                        .userInfoEndpoint()
-                        .userService(principalOauth2UserService);
+                        .defaultSuccessUrl("/");
+//                        .and()
+//                        .oauth2Login()
+//                        .userInfoEndpoint()
+//                        .userService(principalOauth2UserService);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

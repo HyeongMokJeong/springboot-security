@@ -26,13 +26,12 @@ spring:
       client:
         registration:
           google:
-            client-id: //
-            client-secret: //
+            client-id: ${google.client.id}
+            client-secret: ${google.client.secret}
             scope:
+              - openid
               - email
               - profile
-              - https://www.googleapis.com/auth/user.phonenumbers.read
-              - https://www.googleapis.com/auth/user.addresses.read
-              - https://www.googleapis.com/auth/user.gender.read
+
   profiles:
     active: dev

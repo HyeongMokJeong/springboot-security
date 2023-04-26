@@ -1,11 +1,10 @@
-package com.cos.security1.model;
+package com.cos.security1.model.kakao;
 
-import com.google.api.client.util.DateTime;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
 public class KakaoUserDetails {
-    private Long id;
+    private String id;
 }

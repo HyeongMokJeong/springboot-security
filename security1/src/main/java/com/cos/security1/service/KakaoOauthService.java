@@ -1,6 +1,7 @@
 package com.cos.security1.service;
 
-import com.cos.security1.model.KakaoToken;
+import com.cos.security1.model.kakao.KakaoToken;
+import com.cos.security1.model.kakao.KakaoUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,10 +14,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthService {
+public class KakaoOauthService implements OauthServiceInterface {
     private final RestTemplate restTemplate;
 
-    private ResponseEntity<KakaoToken> getKakaoToken(String code, String key, String url) {
+    @Override
+    public String getToken(String code, String key, String url) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", key);
@@ -36,11 +38,12 @@ public class OAuthService {
                 KakaoToken.class
         );
 
-        return response;
+        return response.getBody().getAccess_token();
     }
 
-    private void getKakaoDetails(String token) {
-        System.out.println(token);
+    @Override
+    public String getUserPk(String token) {
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Host", "kapi.kakao.com");
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -48,18 +51,21 @@ public class OAuthService {
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<Object> response = restTemplate.exchange(
+        ResponseEntity<KakaoUserDetails> response = restTemplate.exchange(
                 "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.GET,
                 entity,
-                Object.class
+                KakaoUserDetails.class
         );
 
-        System.out.println(response.getBody().toString());
+        return response.getBody().getId();
     }
 
     public void getTokenFromKakao(String code, String key, String url) {
-        KakaoToken token = getKakaoToken(code, key, url).getBody();
-        getKakaoDetails(token.getAccess_token());
+        String token = getToken(code, key, url);
+        String pk = getUserPk(token);
+
+        System.out.println(token);
+        System.out.println(pk);
     }
 }

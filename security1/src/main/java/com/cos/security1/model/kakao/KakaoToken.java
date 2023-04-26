@@ -1,4 +1,4 @@
-package com.cos.security1.model;
+package com.cos.security1.model.kakao;
 
 import lombok.Getter;
 import lombok.ToString;
